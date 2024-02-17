@@ -6,18 +6,13 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import LLMChain 
 from langchain.prompts import PromptTemplate
 
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
-os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
 
 st.set_page_config(page_title="Demandey User Story Assistant", page_icon="🌍", layout="centered")
 
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+
 st.title("Demandey User Story Assistant")
 st.markdown("This time next we'll be milioners!")
-
 
 
 class StreamHandler(StreamingStdOutCallbackHandler):
@@ -41,21 +36,19 @@ with st.form("my_form"):
     app_type = st.selectbox('Select Story Type', ['Web App', 'Mobile App', 'Backend'])
     st.divider()
     title = st.text_input('User Story Title')
-    user = st.text_input('Who is the user (role)')
     businessFunctionality = st.text_area('Describe functionality')
     data = st.text_area('List data elements, comma separated')
     other = st.text_area('Describe security requirements, navigation flow, etc.')
     submitted = st.form_submit_button("Submit")
 
-if title and businessFunctionality and user and data and submitted:
+if title and businessFunctionality and data and submitted:
     if app_type=='Mobile App':
         prompt_template = PromptTemplate(
-        input_variables = ['title','user', 'businessFunctionality','data','other'], 
+        input_variables = ['title', 'businessFunctionality','data','other'], 
         template="""Act as a software architect. 
         Your task is to create User Story for MOBILE application for developer, by using following inputs:
         Leverage the following inputs:
         User Story Tytle: {title}
-        User: {user}
         Business Functionality of the Web app/module:{businessFunctionality}
         Data Elements: {data}
         Other Aspects (security requirements, navigation flow, etc.) : {other}
@@ -72,12 +65,11 @@ if title and businessFunctionality and user and data and submitted:
         )
     elif (app_type=='Web App'):
         prompt_template = PromptTemplate(
-        input_variables = ['title','user', 'businessFunctionality','data','other'], 
+        input_variables = ['title', 'businessFunctionality','data','other'], 
         template="""Act as a software architect. 
         Your task is to create User Story for WEB application for developer, by using following inputs:
         Leverage the following inputs:
         User Story Tytle: {title}
-        User: {user}
         Business Functionality of the Web app/module:{businessFunctionality}
         Data Elements: {data}
         Other Aspects (security requirements, navigation flow, etc.) : {other}
@@ -94,12 +86,11 @@ if title and businessFunctionality and user and data and submitted:
         )
     else:
         prompt_template = PromptTemplate(
-        input_variables = ['title','user', 'businessFunctionality','data','other'], 
+        input_variables = ['title', 'businessFunctionality','data','other'], 
         template="""Act as a software architect. 
         Your task is to create User Story for Nodejs application for developer, by using following inputs:
         Leverage the following inputs:
         User Story Tytle: {title}
-        User: {user}
         Business Functionality of the Web app/module:{businessFunctionality}
         Data Elements: {data}
         Other Aspects (security requirements, navigation flow, etc.) : {other}
@@ -122,4 +113,4 @@ if title and businessFunctionality and user and data and submitted:
     title_chain = LLMChain(llm=llm, prompt=prompt_template, verbose=True, output_key='result')
 
     
-    result = title_chain.run(title=title, user=user, businessFunctionality=businessFunctionality, data=data, other=other)
+    result = title_chain.run(title=title, businessFunctionality=businessFunctionality, data=data, other=other)
