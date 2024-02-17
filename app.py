@@ -33,7 +33,6 @@ class StreamHandler(StreamingStdOutCallbackHandler):
 
 # App framework
 with st.form("my_form"):
-    st.title('Web Application User Story Assistant') 
     gpt_model = st.selectbox('Select GPT Model', ['gpt-4'])
     temperature = st.slider('Select GenAI temperature', 0.1,1.0,0.3,0.1,)
     st.divider()
