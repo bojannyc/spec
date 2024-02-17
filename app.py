@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
+
 st.set_page_config(page_title="Demandey User Story Assistant", page_icon="🌍", layout="centered")
 
 st.title("Demandey User Story Assistant")
