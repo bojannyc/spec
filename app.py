@@ -30,7 +30,7 @@ class StreamHandler(StreamingStdOutCallbackHandler):
 
 # App framework
 with st.form("my_form"):
-    gpt_model = st.selectbox('Select GPT Model', ['gpt-4'])
+    gpt_model = st.selectbox('Select GPT Model', ['gpt-4-turbo-preview'])
     temperature = st.slider('Select GenAI temperature', 0.1,1.0,0.3,0.1,)
     st.divider()
     app_type = st.selectbox('Select Story Type', ['Web App', 'Mobile App', 'Backend'])
@@ -106,7 +106,6 @@ if title and businessFunctionality and data and submitted:
         """
         )
 
-    st.subheader('User Story Specification') 
     t1=st.empty()
     stream_handler1 = StreamHandler(t1, "text") 
     llm=ChatOpenAI(streaming=True,model=gpt_model, callbacks=[stream_handler1],temperature=temperature)
